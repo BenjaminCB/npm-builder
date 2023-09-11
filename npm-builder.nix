@@ -6,7 +6,9 @@ let
 
     # Create an array of all (meaningful) dependencies
     deps =  builtins.attrValues (removeAttrs packageLock.packages [ "" ])
-         ++ builtins.attrValues (removeAttrs packageLock.dependencies [ "" ])
+         ++ if builtins.elem "dependencies" (builtins.attrNames packageLock.dependencies)
+            then builtins.attrValues (removeAttrs packageLock.dependencies [ "" ])
+            else []
     ;
 
     # Turn each dependency into a fetchurl call
