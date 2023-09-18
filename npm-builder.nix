@@ -21,7 +21,7 @@ let
     # Write a file with the list of tarballs
     tarballsFile = pkgs.writeTextFile {
         name = "tarballs";
-        text = builtins.concatStringsSep "\n" tarballs;
+        text = (builtins.concatStringsSep "\n" tarballs) + "\n\r";
     };
 in pkgs.stdenv.mkDerivation {
     inherit (packageLock) name version;
@@ -39,7 +39,6 @@ in pkgs.stdenv.mkDerivation {
         do
             i=$((i+8))
             echo "caching $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8"
-            echo "caching $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8" >> deps.txt
             npm cache add "$p1" &
             npm cache add "$p2" &
             npm cache add "$p3" &
@@ -60,11 +59,11 @@ in pkgs.stdenv.mkDerivation {
                 continue
             fi
             echo "caching $p"
-            echo "caching $p" >> deps.txt
             npm cache add "$p"
         done <${tarballsFile}
 
-        # npm ci
-        # tsc --build .
+        echo "installing..."
+        npm ci
+        tsc --build .
     '';
 }
