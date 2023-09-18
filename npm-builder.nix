@@ -39,6 +39,7 @@ in pkgs.stdenv.mkDerivation {
         do
             i=$((i+8))
             echo "caching $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8"
+            echo "caching $p1 $p2 $p3 $p4 $p5 $p6 $p7 $p8" >> deps.txt
             npm cache add "$p1" &
             npm cache add "$p2" &
             npm cache add "$p3" &
@@ -59,10 +60,11 @@ in pkgs.stdenv.mkDerivation {
                 continue
             fi
             echo "caching $p"
+            echo "caching $p" >> deps.txt
             npm cache add "$p"
         done <${tarballsFile}
 
-        npm ci
-        tsc --build .
+        # npm ci
+        # tsc --build .
     '';
 }
