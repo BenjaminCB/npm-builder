@@ -26,7 +26,7 @@ let
 in pkgs.stdenv.mkDerivation {
     inherit (packageLock) name version;
     inherit src;
-    buildInputs = with pkgs; [ nodejs nodePackages.typescript ];
+    buildInputs = with pkgs; [ nodejs_20 nodePackages.typescript ];
     buildPhase = ''
         export HOME=$PWD/.home
         export npm_config_cache=$PWD/.npm
